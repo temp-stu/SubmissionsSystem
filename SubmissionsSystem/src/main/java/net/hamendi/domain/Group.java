@@ -1,6 +1,8 @@
-package net.hamendi.core;
+package net.hamendi.domain;
 
 import java.util.Collection;
+
+import net.hamendi.core.SubmissionSystem;
 
 public class Group {
 

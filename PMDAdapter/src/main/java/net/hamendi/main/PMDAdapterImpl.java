@@ -1,30 +1,72 @@
 package net.hamendi.main;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
+import net.hamendi.domain.OutputType;
+import net.hamendi.domain.Report;
+import net.hamendi.domain.Rule;
+import net.hamendi.domain.RuleSet;
 import net.sourceforge.pmd.PMD;
+import net.sourceforge.pmd.PMDConfiguration;
 
 public class PMDAdapterImpl implements PMDAdapter {
 	
-	public void buildSubmission() {
-		PMD.main(new String[]{"-d","../",
-				"-f","text","-R","/Users/gemini/STSProjects/TestingAspectJ/src/main/resources/rules.xml"});
-		StringBuffer output = new StringBuffer();
-		Process p;
-		try {
-			p = Runtime.getRuntime().exec("ls");
-			p.waitFor();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-	        String line = "";			
-			while ((line = reader.readLine())!= null) {
-				output.append(line + "\n");
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public Report buildTest(int submissionId, List<File> files, OutputType format, RuleSet rules) {
 		
+		PMDConfiguration config = new PMDConfiguration();
+		StringBuilder inputPaths = new StringBuilder();
+		for (File file : files) {
+			inputPaths.append(file.getAbsolutePath() + ",");
+		}
+		config.setInputPaths(inputPaths.deleteCharAt(inputPaths.lastIndexOf(",")).toString());
+		config.setReportFormat(format.toString().toLowerCase());
+		config.setRuleSets(rules.getPath());
+		File file = new File("temp" + submissionId + ".txt");
+		try {
+			Files.createFile(file.toPath());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		config.setReportFile(file.getAbsolutePath());
+		PMD.doPMD(config);
+		return new Report(config.getReportFile());
+				
+	}
+
+	@Override
+	public void setRuleSet(RuleSet ruleset) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setRule(Rule rule) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public RuleSet getRuleSet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setOutputType() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public OutputType getOutputType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

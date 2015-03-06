@@ -1,0 +1,2 @@
+/Users/gemini/STSProjects/SubmissionsSystem/PMDAdapter/src/main/java/net/hamendi/main/PMDAdapterImpl.java:25:	Avoid concatenating nonliterals in a StringBuffer/StringBuilder constructor or append().
+/Users/gemini/STSProjects/SubmissionsSystem/PMDAdapter/src/test/resources/net/hamendi/security/Authenticator.java:42:	Must handle exceptions

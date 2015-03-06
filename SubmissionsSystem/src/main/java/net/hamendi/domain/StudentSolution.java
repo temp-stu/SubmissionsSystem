@@ -1,7 +1,10 @@
-package net.hamendi.core;
+package net.hamendi.domain;
 
 import java.io.BufferedInputStream;
 import java.io.Serializable;
+
+import net.hamendi.core.TestResult;
+import net.hamendi.core.TestRunner;
 
 public class StudentSolution implements Solution, Serializable {
 

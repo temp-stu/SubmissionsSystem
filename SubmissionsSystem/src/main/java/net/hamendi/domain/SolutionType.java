@@ -1,4 +1,4 @@
-package net.hamendi.core;
+package net.hamendi.domain;
 
 public class SolutionType {
 

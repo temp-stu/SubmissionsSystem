@@ -1,4 +1,7 @@
-package net.hamendi.core;
+package net.hamendi.domain;
+
+import net.hamendi.core.TestResult;
+import net.hamendi.core.TestRunner;
 
 public interface Solution {
 

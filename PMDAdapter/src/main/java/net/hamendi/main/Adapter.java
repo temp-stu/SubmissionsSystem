@@ -1,11 +1,16 @@
 package net.hamendi.main;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-import net.sourceforge.pmd.PMD;
+import net.hamendi.domain.OutputType;
+import net.hamendi.domain.Rule;
+import net.hamendi.domain.RuleSet;
 
 public interface Adapter {
+	
+	void setRuleSet(RuleSet ruleset);
+	void setRule(Rule rule);
+	RuleSet getRuleSet();
+	void setOutputType();
+	OutputType getOutputType();
 	
 
 }

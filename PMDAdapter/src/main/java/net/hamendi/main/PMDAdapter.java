@@ -1,5 +1,5 @@
 package net.hamendi.main;
 
-public interface PMDAdapter {
+public interface PMDAdapter extends Adapter {
 
 }

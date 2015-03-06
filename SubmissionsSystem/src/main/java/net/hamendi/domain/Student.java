@@ -1,4 +1,4 @@
-package net.hamendi.core;
+package net.hamendi.domain;
 
 import java.util.Collection;
 
