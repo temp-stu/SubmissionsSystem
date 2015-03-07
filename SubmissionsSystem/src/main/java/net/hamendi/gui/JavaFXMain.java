@@ -1,68 +1,73 @@
 package net.hamendi.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingNode;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javafx.application.Application;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
-import javafx.embed.swing.SwingNode;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-
 public class JavaFXMain extends Application {
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void start(Stage primaryStage) {
-		
-		final SwingNode swingNode = new SwingNode();
-
-		JPanel cp = new JPanel(new BorderLayout());
-
-        RSyntaxTextArea textArea = new RSyntaxTextArea(200, 600);
-        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
-        textArea.setCodeFoldingEnabled(true);
-        textArea.setAntiAliasingEnabled(true);
-        RTextScrollPane sp = new RTextScrollPane(textArea);
-        sp.setFoldIndicatorEnabled(true);
-        cp.add(sp);
         
-        swingNode.setContent(cp);
+        try {
+        	
+        	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SubmissionsSystem.fxml"));
+        	
+        	AnchorPane page = (AnchorPane) fxmlLoader.load();
+            Scene scene = new Scene(page);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Submissions System - Diploma Project");
+            primaryStage.show();
+            
+            
+            
+            SubmissionsSystem controller = fxmlLoader.getController();
+        	Pane codePane = controller.getCodeText();
+        	final SwingNode swingNode = new SwingNode();
+    		setCodePane(swingNode, (int)(codePane.getWidth()/10), (int)(codePane.getHeight()/10));
+            codePane.getChildren().add(swingNode);
+            
+            codePane.widthProperty().addListener(new ChangeListener<Number>() {
+				@Override
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+					codePane.getChildren().remove(swingNode);
+					setCodePane(swingNode, newValue.intValue()/10, (int)(codePane.getHeight()/10.0));
+					codePane.getChildren().add(swingNode);
+				}
+			});
+            codePane.heightProperty().addListener(new ChangeListener<Number>() {
+                @Override 
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                	codePane.getChildren().remove(swingNode);
+                	setCodePane(swingNode, (int)(codePane.getWidth())/10, newValue.intValue()/10);
+                	codePane.getChildren().add(swingNode);
+                }
+            });
 
-        StackPane pane = new StackPane();
-        pane.getChildren().add(swingNode);
-
-        primaryStage.setTitle("Swing in JavaFX");
-        primaryStage.setScene(new Scene(pane, 200, 600));
-        primaryStage.show();
+        } catch (Exception ex) {
+            Logger.getLogger(JavaFXMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 		/*
-		primaryStage.setTitle("Hello World!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(
@@ -79,15 +84,21 @@ public class JavaFXMain extends Application {
 	            
 	        }
         }
-        
-        
-        StackPane root = new StackPane();
-        //root.getChildren().add(btn);
-        root.getChildren().add(swingNode);
-        primaryStage.setScene(new Scene(root, 300, 250));
-        primaryStage.show();
         */
 		
+	}
+
+	private void setCodePane(final SwingNode swingNode, int width, int height) {
+		JPanel cp = new JPanel(new GridBagLayout());
+        RSyntaxTextArea textArea = new RSyntaxTextArea(width, height); //32,45
+        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        textArea.setCodeFoldingEnabled(true);
+        textArea.setAntiAliasingEnabled(true);
+        RTextScrollPane sp = new RTextScrollPane(textArea);
+        sp.setFoldIndicatorEnabled(true);
+        cp.add(sp);
+        
+        swingNode.setContent(cp);
 	}
 	
 	public static void main(String[] args) {
