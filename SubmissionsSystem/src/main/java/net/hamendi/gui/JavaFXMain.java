@@ -24,6 +24,9 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 public class JavaFXMain extends Application {
 	
+	private static long counterW = 0L;
+	private static long counterH = 0L;
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public void start(Stage primaryStage) {
@@ -38,30 +41,44 @@ public class JavaFXMain extends Application {
             primaryStage.setTitle("Submissions System - Diploma Project");
             primaryStage.show();
             
-            
+            System.out.println(counterW);
+            System.out.println(counterH);
             
             SubmissionsSystem controller = fxmlLoader.getController();
         	Pane codePane = controller.getCodeText();
-        	final SwingNode swingNode = new SwingNode();
-    		setCodePane(swingNode, (int)(codePane.getWidth()/10), (int)(codePane.getHeight()/10));
+        	SwingNode swingNode = new SwingNode();
+        	JPanel cp = new JPanel(new GridBagLayout());
+    		setCodePane(swingNode, cp, (int)(codePane.getWidth()/10), (int)(codePane.getHeight()/10));
             codePane.getChildren().add(swingNode);
             
             codePane.widthProperty().addListener(new ChangeListener<Number>() {
 				@Override
 				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-					codePane.getChildren().remove(swingNode);
-					setCodePane(swingNode, newValue.intValue()/10, (int)(codePane.getHeight()/10.0));
-					codePane.getChildren().add(swingNode);
+					codePane.getChildren().clear();
+					SwingNode swingNode = new SwingNode();
+					JPanel cp = new JPanel(new GridBagLayout());
+					RSyntaxTextArea textArea = new RSyntaxTextArea(newValue.intValue()/10, 45); //32,45
+			        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+			        textArea.setCodeFoldingEnabled(true);
+			        textArea.setAntiAliasingEnabled(true);
+			        textArea.doLayout();
+			        RTextScrollPane sp = new RTextScrollPane(textArea);
+			        sp.setFoldIndicatorEnabled(true);
+			        cp.add(sp);
+			        
+			        swingNode.setContent(cp);
 				}
 			});
-            codePane.heightProperty().addListener(new ChangeListener<Number>() {
-                @Override 
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                	codePane.getChildren().remove(swingNode);
-                	setCodePane(swingNode, (int)(codePane.getWidth())/10, newValue.intValue()/10);
-                	codePane.getChildren().add(swingNode);
-                }
-            });
+//            codePane.heightProperty().addListener(new ChangeListener<Number>() {
+//                @Override 
+//                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                	codePane.getChildren().remove(swingNode);
+//                	cp.removeAll();
+//                	//setCodePane(swingNode, cp, (int)(codePane.getWidth())/10, newValue.intValue()/10);
+//                	//codePane.getChildren().add(swingNode);
+//                	//System.out.println(counterH++);
+//                }
+//            });
 
         } catch (Exception ex) {
             Logger.getLogger(JavaFXMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,12 +105,12 @@ public class JavaFXMain extends Application {
 		
 	}
 
-	private void setCodePane(final SwingNode swingNode, int width, int height) {
-		JPanel cp = new JPanel(new GridBagLayout());
+	private void setCodePane(final SwingNode swingNode, final JPanel cp, int width, int height) {
         RSyntaxTextArea textArea = new RSyntaxTextArea(width, height); //32,45
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled(true);
         textArea.setAntiAliasingEnabled(true);
+        textArea.doLayout();
         RTextScrollPane sp = new RTextScrollPane(textArea);
         sp.setFoldIndicatorEnabled(true);
         cp.add(sp);

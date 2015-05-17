@@ -2,9 +2,13 @@ package net.hamendi.cli;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cz.pecinovsky.assev.library.AssignmentDescriptor;
+import cz.pecinovsky.assev.library.LibraryContext;
+import cz.pecinovsky.assev.library.SolutionDescriptor;
 import net.hamendi.core.InputValidator;
 import net.hamendi.domain.Group;
 import net.hamendi.domain.Rule;
@@ -12,10 +16,38 @@ import net.hamendi.domain.RuleSet;
 import net.hamendi.domain.Solution;
 import net.hamendi.core.SubmissionSystem;
 
+@SuppressWarnings("unused")
 public class CLISubmissionProcessor extends SubmissionSystem {
 
 	private String solutionsGlobalDir;
 	
+	public static void main(String[] args) {
+		
+		CLISubmissionProcessor obj = new CLISubmissionProcessor();
+		
+		LibraryContext ctx = LibraryContext.getInstance();
+		
+		ArrayList<AssignmentDescriptor> descriptors = ctx.getAssignmentDescriptors();
+		//TODO WTF
+		try { Thread.sleep(5000); } catch (InterruptedException e) { e.printStackTrace();	}
+		
+		for (AssignmentDescriptor desc : descriptors) {
+			System.out.println(desc);			
+			ArrayList<SolutionDescriptor> solutions = ctx.getSolutionDescriptor(desc);
+			System.out.println(solutions);
+			for (SolutionDescriptor solution : solutions) {
+				System.out.println(solution.solutionPath);
+				//ctx.sendEvaluation(internalSolutionID, score, explanation) 
+				//solution.internalID is the internalSolutionID
+				
+				//Always comes back empty
+			}
+		}
+		System.out.println(descriptors);		
+	}
+	
+	
+	/* MH - Launch PMD by accessing the runtime and executing it through the command line 
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
@@ -46,7 +78,7 @@ public class CLISubmissionProcessor extends SubmissionSystem {
 		 * -f == file format (text, xml)
 		 * -R == ruleset path
 		 * default ruleset path: rulesets/java/basic.xml
-		 */
+		 *//*
 		StringBuffer output = new StringBuffer();
  
 		Process p;
@@ -66,6 +98,8 @@ public class CLISubmissionProcessor extends SubmissionSystem {
 		return output.toString();
  
 	}
+
+	*/
 
 	
 	@Override

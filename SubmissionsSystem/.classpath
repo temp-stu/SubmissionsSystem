@@ -6,6 +6,7 @@
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PMDAdapter"/>
-	<classpathentry kind="lib" path="/Users/gemini/dev/RSyntaxTextArea/rsyntaxtextarea-2.5.6.jar" sourcepath="/Users/gemini/dev/RSyntaxTextArea/rsyntaxtextarea-src-2.5.6"/>
+	<classpathentry kind="lib" path="/Users/gemini/STSProjects/SubmissionsSystem/lib/rsyntaxtextarea-2.5.6.jar" sourcepath="/Users/gemini/dev/RSyntaxTextArea/rsyntaxtextarea-src-2.5.6"/>
+	<classpathentry kind="lib" path="/Users/gemini/STSProjects/SubmissionsSystem/lib/Homework_tester.jar" sourcepath="/Users/gemini/STSProjects/SubmissionsSystem/lib/Homework tester lib/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
