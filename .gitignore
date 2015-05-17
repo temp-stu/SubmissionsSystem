@@ -1,8 +1,8 @@
-*.class
+**/*.class
 .metadata/
 Servers/
 RemoteSystemsTempFiles/
-*.DS_STore
+**/.DS_STore
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
